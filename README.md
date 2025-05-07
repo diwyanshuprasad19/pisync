@@ -17,7 +17,7 @@ A lightweight Django backend to collect and manage sync events from PiBook and P
 
 1️⃣ Clone the repository:
 
--git clone <repo-url>
+-git clone git@github.com:diwyanshuprasad19/pisync.git
 -cd pisync_backend
 
 2️⃣ Create a virtual environment:
