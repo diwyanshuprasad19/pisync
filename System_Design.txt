@@ -1,0 +1,83 @@
+1.Current System Design
+
+Django REST API backend
+
+SQLite (development) / PostgreSQL (production)
+
+SyncEvent model storing:
+
+device_id, timestamp, total_files_synced, total_errors, internet_speed
+
+2.Scaling for 5000+ devices/hour
+
+Database optimizations
+
+Switch to PostgreSQL
+
+Add indexes → device_id, timestamp
+
+Use partitioning (by month or device group) when table grows large
+
+Batch event ingestion
+
+Support API to receive multiple sync events in one request
+
+Use Django bulk_create() to insert events efficiently
+
+Asynchronous processing
+
+Add a message queue → RabbitMQ or Redis
+
+Offload sync event handling to background workers (Celery)
+
+Caching
+
+Cache results for expensive queries (like repeated-failures) using Redis
+
+Horizontal scaling
+
+Run multiple Django app servers behind a load balancer (Nginx + Gunicorn)
+
+Make sure the app is stateless (no local sessions)
+
+Monitoring + autoscaling
+
+Add Prometheus + Grafana or Datadog
+
+Track API latency, DB performance, worker queue length
+
+Enable autoscaling on cloud (AWS/GCP)
+
+3.Database
+
+Use sharded PostgreSQL or a distributed DB (like CockroachDB or YugabyteDB)
+
+Store older data in a data lake (S3, BigQuery) + keep recent events in the main DB
+
+Event streaming
+
+Replace API → queue → DB pattern with event streaming (Apache Kafka)
+
+Process millions of events with scalable consumers
+
+Advanced caching
+
+Use Redis or Memcached to store:
+
+Recent device status
+
+Frequent queries (top devices, failure rates)
+
+Autoscaling workers
+
+Dynamically scale Celery workers based on queue backlog
+
+API rate limiting
+
+Add throttling per device to protect the system
+
+Observability
+
+Add distributed tracing (OpenTelemetry)
+
+Alert on error rates, throughput, and anomalies
